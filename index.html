@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="UTF-8" />
+
+
+    <title>
+        Course Registration
+    </title>
+    <style type="text/css">
+        .commonHeader {
+            font-family: calibri;
+            font-size: x-large;
+            font-weight: bold;
+            text-align: center;
+            margin: 5px;
+
+
+        }
+
+        .commonLabel {
+            font-family: calibri;
+            font-size: medium;
+            text-align: right;
+            margin: 5px;
+            padding: 5px;
+
+        }
+
+        .commonInput {
+            font-family: calibri;
+            font-size: medium;
+            border-radius: 5px;
+            border: 2px solid lightblue;
+            text-align: left;
+            margin: 5px;
+            padding: 5px;
+
+        }
+
+        .commonInput {
+            font-family: calibri;
+            font-size: medium;
+            border-radius: 5px;
+            border: 2px solid lightblue;
+            text-align: left;
+            margin: 5px;
+            padding: 5px;
+
+        }
+
+        .headerCell {
+            font-family: calibri;
+            font-size: large;
+            color: #8f3925;
+            border-radius: 5px;
+            border: 2px solid #934422;
+            text-align: center;
+            margin: 5px;
+            background: #efbada;
+            padding: 10px;
+
+        }
+
+        .commonCell {
+            font-family: calibri;
+            font-size: medium;
+            color: #122354;
+            border-radius: 5px;
+            border: 1px solid #934422;
+            text-align: center;
+            margin: 5px;
+            padding: 5px;
+
+        }
+
+        .error {
+            font-family: calibri;
+            font-size: small;
+            font-style: italic;
+            color: #ee2354;
+            text-align: left;
+            margin: 5px;
+            padding: 5px;
+            width: 150px;
+
+
+        }
+
+        .box {
+            box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            margin: 20px, 20px;
+            padding: 20px;
+            justify-content: center;
+
+        }
+
+        .buttons {
+            font-family: calibri;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-left: 10px;
+            margin-top: 10px;
+            padding: 8px 12px 8px 12px;
+            box-shadow: 3px 3px 10px 2px #CECEDE;
+            border: none;
+            background: linear-gradient(180deg, #667799, #7799CC);
+            color: white;
+
+        }
+
+        .buttons:hover {
+            border: 1px solid royalblue;
+            box-shadow: 3px 3px 10px 2px #CCCCDD;
+            padding: 10px 14px 10px 14 px;
+            cursor: pointer;
+            background: linear-gradient(180deg, #DCDCEE, #FEFEFF);
+            color: royalblue;
+
+        }
+
+        .buttons:focus {
+            background: linear-gradient(180deg, #dcdcee, #FEFEFF);
+            color: royalblue;
+
+        }
+    </style>
+</head>
+
+<body style="background-color:white" onload="generateCid()">
+    <center>
+        <form name="frmCourseReg" id="frmCourseReg" method="POST">
+            <table class="box">
+                <tr>
+                    <td colspan="3" class="commonHeader">Course Registration</td>
+                </tr>
+                <tr>
+                    <td class="commonLabel">Course ID:</td>
+                    <td colspan="2"><input type="text" id="txtcourseid" name="txtcourseid" readonly class="commonInput">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="commonLabel">Course Name:</td>
+                    <td>
+                        <input type="text" id="txtCourseName" name="txtCourseName" size="40" maxlength="50"
+                            onblur="chkName(this)" autocomplete=true placeholder="E.g. Computer Science and Engineering"
+                            class="commonInput">
+                    </td>
+                    <td>
+                        <div id="divCName" class="error"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="commonLabel">Course Type:</td>
+                    <td colspan="2">
+                        <select id="optCourseType" name="optCourseType" class="commonInput">
+                            <option value="">Select Course Type..</option>
+                            <option value="B.tech">B.Tech</option>
+                            <option value="M.tech">M.Tech</option>
+                            <option value="Bachelor">Bachelor</option>
+                            <option value="Master">Master</option>
+                            <option value="Diploma">Diploma</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="commonLabel">Duration:</td>
+                    <td colspan="2">
+                        <select id="optDuration" name="optDuration" class="commonInput">
+                            <option value="">Select Course Duration..</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <td colspan="3" align="center" valign="center">
+                    <input id="addbtn" name="addbtn" onclick="validate()" type="button" value=" Add " class="buttons">
+                    <input id="cancelbtn" name="cancelbtn" type="reset" onblur="generateCid()" value=" Cancel "
+                        class="buttons">
+                </td>
+            </table>
+        </form>
+        <table>
+            <div id="showCourses" style="margin: 25px;"></div>
+        </table>
+
+    </center>
+</body>
+
+</html>
+<script lang="javascript">
+    var txtCourseId = document.getElementById("txtcourseid");
+    var count = 1;
+    var flag = 0;
+    var flagName = false;
+
+    function generateCid() {
+        var cid = "C" + count;
+        if (cid.length <= 3) {
+            var pad = 3 - cid.length;
+            cid = "C";
+            for (var i = 1; i <= pad; i++) {
+                cid += "0";
+            }
+            cid += count;
+            flag = 1;
+            txtCourseId.value = cid;
+            document.getElementById("divCName").innerHTML = "";
+        } else {
+            alert("Reload The form.");
+            document.getElementById("addbtn").disable = true;
+        }
+    }
+    var flagCName = false;
+    function chkName(htmlobj) {
+        var strCName = htmlobj.value;
+        if (strCName == "") {
+            flagCName = false;
+            document.getElementById("divCName").innerHTML = "Please enter Course Name.";
+        } else {
+            flagCName = false;
+            var regEx = /^[a-zA-Z ]+$/;
+            if (!strCName.match(regEx)) {
+                document.getElementById("divCName").innerHTML = "Invalid Course Name: Only Alphabets and Space allowed.";
+                flagCName = false;
+            } else {
+                document.getElementById("divCName").innerHTML = "<img src=tick.jpg>";
+                flagCName = true;
+            }
+        }
+    }
+    var courseTable = "";
+	var headerContent = "<table border=0><tr>";
+	headerContent += "<td align=center valign=center class=headerCell>SL No.</td>";
+	headerContent += "<td align=center valign=center class=headerCell>Course Id</td>";
+	headerContent += "<td align=center valign=center class=headerCell>Course Name</td>";
+	headerContent += "<td align=center valign=center class=headerCell>Course Type</td>";
+	headerContent += "<td align=center valign=center class=headerCell>Duration</td>";
+	headerContent += "</tr>";
+	var bottomContent = "</table>";
+	function validate(){
+		if(document.getElementById("txtcourseid").value!=""){
+			if(document.getElementById("txtCourseName").value!="" && flagCName==true){
+				if(document.getElementById("optCourseType").value!=""){
+					if(document.getElementById("optDuration").value!=""){
+						var cid = document.getElementById("txtcourseid").value;
+						var cname = document.getElementById("txtCourseName").value;
+						var ctype = document.getElementById("optCourseType").value;
+						var duration = document.getElementById("optDuration").value;
+						courseTable += "<tr>";
+						courseTable += "<td align=center valign=center class=commonCell>"+count+"</td>";
+						courseTable += "<td align=center valign=center class=commonCell>"+cid+"</td>";
+						courseTable += "<td align=center valign=center class=commonCell>"+cname+"</td>";
+						courseTable += "<td align=center valign=center class=commonCell>"+ctype+"</td>";
+						courseTable += "<td align=center valign=center class=commonCell>"+duration+"</td>";
+						courseTable += "</tr>";
+						var content = headerContent+courseTable+bottomContent;
+						document.getElementById("showCourses").innerHTML=content;
+						alert("Course Successfully Added!");
+						document.getElementById("frmCourseReg").reset();
+						count = count+1;
+						generateCId();
+					}else{
+						alert("Please provide Duration.");
+					}
+				}else{
+					alert("Please provide Course Type.");
+				}
+			}else{
+				alert("Please provide valid Course Name.");
+			}
+		}else{
+			alert("Please reload the page: error onloading!");
+		}
+	}
+</script>
